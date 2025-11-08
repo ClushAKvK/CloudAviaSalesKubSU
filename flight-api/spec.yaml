@@ -1,0 +1,71 @@
+openapi: 3.0.1
+info:
+  title: Flight Booking API
+  version: '1.0'
+servers:
+- url: https://d5dk7mk1tt8shgpqk2ll.9bgyfspn.apigw.yandexcloud.net
+paths:
+  /flights:
+    get:
+      x-yc-apigateway-integration:
+        type: "cloud_functions"
+        function_id: "d4eu28td1ab4vi1j2goh"
+        http_method: "GET"
+      responses:
+        '200':
+          description: OK
+      x-yc-apigateway-cors:
+        allowOrigins: ["*"]
+        allowMethods: ["GET","POST","OPTIONS"]
+  /buy:
+    post:
+      x-yc-apigateway-integration:
+        type: "cloud_functions"
+        function_id: "d4eu28td1ab4vi1j2goh"
+        http_method: "POST"
+      responses:
+        '200':
+          description: OK
+      x-yc-apigateway-cors:
+        allowOrigins: ["*"]
+        allowMethods: ["POST","OPTIONS"]
+        allowHeaders: ["Content-Type"]
+        maxAge: 3600
+    options:
+      x-yc-apigateway-integration:
+        payload_format_version: '0.1'
+        function_id: d4eu28td1ab4vi1j2goh
+        tag: ''
+        type: cloud_functions
+        service_account_id: aje1fmc0fjs6hmksues4
+  /ticket/{id}:
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      x-yc-apigateway-integration:
+        type: "cloud_functions"
+        function_id: "d4eu28td1ab4vi1j2goh"
+        http_method: "GET"
+      responses:
+        '200':
+          description: OK
+      x-yc-apigateway-cors:
+        allowOrigins: ["*"]
+        allowMethods: ["GET","OPTIONS"]
+  /tickets-bucket/{file}:
+    get:
+      parameters:
+        - name: file
+          in: path
+          required: true
+          schema:
+            type: string
+      x-yc-apigateway-integration:
+        bucket: tickets-bucket
+        type: object_storage
+        service_account_id: aje1fmc0fjs6hmksues4
+        object: '{file}'
